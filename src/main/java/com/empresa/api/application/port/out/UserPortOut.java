@@ -12,4 +12,5 @@ public interface UserPortOut {
     List<User> buscarPorNombre(String nombre);
     List<User> buscarPorApellido(String apellido);
     List<User> buscarPorEdad(String edad);
+    long count();
 }

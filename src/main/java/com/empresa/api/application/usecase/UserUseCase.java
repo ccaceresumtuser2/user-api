@@ -51,4 +51,9 @@ public class UserUseCase implements UserPortIn {
     public List<User> buscarPorEdad(String edad) {
         return userPortOut.buscarPorEdad(edad);
     }
+
+    @Override
+    public long count() {
+        return userPortOut.count();
+    }
 }

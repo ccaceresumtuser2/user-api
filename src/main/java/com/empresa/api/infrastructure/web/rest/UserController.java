@@ -92,4 +92,18 @@ public class UserController {
     public ResponseEntity<UserResponse> buscarPorEdad(@RequestParam String q) {
         return ResponseEntity.ok(UserMapper.toListResponse(userPortIn.buscarPorEdad(q)));
     }
+
+    @Operation(summary = "Contar usuarios", description = "Retorna el total de registros en la tabla users")
+    @ApiResponse(responseCode = "200", description = "Conteo obtenido exitosamente",
+        content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @GetMapping("/count")
+    public ResponseEntity<UserResponse> contarUsuarios() {
+        long total = userPortIn.count();
+        return ResponseEntity.ok(UserResponse.builder()
+                .status("SUCCESS")
+                .message("Total de usuarios registrados")
+                .data(total)
+                .timestamp(java.time.LocalDateTime.now().toString())
+                .build());
+    }
 }

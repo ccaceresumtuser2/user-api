@@ -57,6 +57,11 @@ public class UserPersistenceAdapter implements UserPortOut {
                 .toList();
     }
 
+    @Override
+    public long count() {
+        return userRepository.count();
+    }
+
     private UserEntity toEntity(User user) {
         return UserEntity.builder()
                 .nombres(user.getNombres())
