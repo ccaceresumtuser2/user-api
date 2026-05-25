@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: user-api-app
+    container_name: user-api-app-prod
     ports:
       - "8099:8099"
     environment:
