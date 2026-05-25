@@ -16,6 +16,19 @@ pipeline {
             }
         }
 
+        stage('Setup') {
+            steps {
+                sh '''
+                    if ! command -v docker-compose > /dev/null 2>&1; then
+                        curl -SL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 \
+                             -o /usr/local/bin/docker-compose
+                        chmod +x /usr/local/bin/docker-compose
+                    fi
+                    docker-compose version
+                '''
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x mvnw && ./mvnw clean package -DskipTests -q'
