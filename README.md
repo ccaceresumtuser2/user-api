@@ -78,11 +78,11 @@ docker build -t user-api .
 ## Ejecución local (sin Docker)
 
 Editar [src/main/resources/application.properties](src/main/resources/application.properties) con las credenciales de tu base de datos:
-
+el password consultelo con el Lider Tecnico.
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3307/demo_db?createDatabaseIfNotExist=true
 spring.datasource.username=root
-spring.datasource.password=123456
+spring.datasource.password=xxxxxxxx
 server.port=8099
 ```
 
