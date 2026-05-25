@@ -38,7 +38,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    docker-compose down || true
+                    CONTAINER_NAME=$(docker-compose config | grep 'container_name' | awk '{print $2}')
+                    if [ -n "$CONTAINER_NAME" ]; then
+                        docker stop $CONTAINER_NAME || true
+                        docker rm   $CONTAINER_NAME || true
+                    fi
                     docker-compose up --build -d
                 '''
             }
