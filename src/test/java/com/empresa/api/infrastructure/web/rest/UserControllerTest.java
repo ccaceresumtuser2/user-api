@@ -2,6 +2,8 @@ package com.empresa.api.infrastructure.web.rest;
 
 import com.empresa.api.application.port.in.UserPortIn;
 import com.empresa.api.domain.model.User;
+import com.empresa.api.infrastructure.config.AppMessages;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,8 +26,21 @@ class UserControllerTest {
     @Mock
     private UserPortIn userPortIn;
 
+    @Mock
+    private AppMessages messages;
+
     @InjectMocks
     private UserController userController;
+
+    @BeforeEach
+    void setUp() {
+        when(messages.getUserErrorCrear()).thenReturn("Error al crear el usuario");
+        when(messages.getUserLista()).thenReturn("Lista de usuarios obtenida exitosamente");
+        when(messages.getUserEncontrado()).thenReturn("Usuario encontrado");
+        when(messages.getErrorNoEncontrado()).thenReturn("Recurso no encontrado");
+        when(messages.getUserEmailNoEncontrado()).thenReturn("No existe usuario con email: %s");
+        when(messages.getUserTotal()).thenReturn("Total de usuarios registrados");
+    }
 
     private User buildUser() {
         return User.builder()
@@ -100,6 +115,7 @@ class UserControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("SUCCESS", response.getBody().getStatus());
+        assertEquals("Usuario encontrado", response.getBody().getMessage());
     }
 
     @Test
@@ -110,6 +126,7 @@ class UserControllerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("ERROR", response.getBody().getStatus());
+        assertEquals("Recurso no encontrado", response.getBody().getMessage());
     }
 
     // ── GET /buscar/nombre ────────────────────────────────────────────────────
@@ -159,5 +176,6 @@ class UserControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("SUCCESS", response.getBody().getStatus());
         assertEquals(7L, response.getBody().getData());
+        assertEquals("Total de usuarios registrados", response.getBody().getMessage());
     }
 }

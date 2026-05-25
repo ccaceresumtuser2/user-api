@@ -1,18 +1,35 @@
 package com.empresa.api.domain.service;
 
 import com.empresa.api.domain.model.User;
+import com.empresa.api.infrastructure.config.AppMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+
+    @Mock
+    private AppMessages mockMessages;
 
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService();
+        when(mockMessages.getUserDatosNulos()).thenReturn("Error: User data is null");
+        when(mockMessages.getUserValidado()).thenReturn("Usuario Validado con Exito");
+        when(mockMessages.getUserCreado()).thenReturn("User created successfully: %s");
+        when(mockMessages.getUserErrorValidacion()).thenReturn("Error al Validar Usuario: %s");
+        when(mockMessages.getUserEmailObligatorio()).thenReturn("Email is required");
+        when(mockMessages.getUserNombresObligatorio()).thenReturn("First name is required");
+        when(mockMessages.getUserApellidosObligatorio()).thenReturn("Last name is required");
+        when(mockMessages.getUserEdadObligatorio()).thenReturn("Age is required");
+        userService = new UserService(mockMessages);
     }
 
     // ── createUser ──────────────────────────────────────────────────────────
