@@ -177,6 +177,36 @@ CREATE TABLE users (
 
 ---
 
+## Pipeline Jenkins
+
+El proyecto incluye un [Jenkinsfile](Jenkinsfile) con pipeline declarativo de 4 etapas:
+
+| Stage | Descripción |
+|-------|-------------|
+| **Checkout** | Clona el repositorio y muestra rama y commit |
+| **Build & Test** | Compila y ejecuta los tests con Maven; publica resultados JUnit |
+| **Docker Build** | Construye la imagen etiquetada con el número de build y `latest` |
+| **Deploy** | Reinicia el contenedor con `docker compose` |
+
+### Credencial requerida en Jenkins
+
+Antes de ejecutar el pipeline, crear en **Manage Jenkins → Credentials** una credencial de tipo **Username with password** con ID:
+
+```
+mysql-credentials
+```
+
+Con el usuario y contraseña de MySQL (consultar al Líder Técnico).
+
+### Ejecutar el pipeline
+
+1. Crear un nuevo item → **Pipeline**
+2. En *Pipeline definition* seleccionar **Pipeline script from SCM**
+3. Apuntar al repositorio y dejar `Jenkinsfile` como script path
+4. Guardar y ejecutar **Build Now**
+
+---
+
 ## Tests
 
 ```bash
