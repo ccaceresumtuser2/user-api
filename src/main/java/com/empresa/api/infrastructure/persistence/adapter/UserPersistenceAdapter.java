@@ -11,7 +11,9 @@ import com.empresa.api.infrastructure.persistence.entity.UserEntity;
 import com.empresa.api.infrastructure.persistence.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class UserPersistenceAdapter implements UserPortOut {
@@ -20,46 +22,60 @@ public class UserPersistenceAdapter implements UserPortOut {
 
     @Override
     public User save(User user) {
+        log.debug("Persistiendo usuario: {}", user.getEmail());
         UserEntity saved = userRepository.save(toEntity(user));
+        log.info("Usuario persistido con id={}", saved.getId());
         return toDomain(saved);
     }
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll().stream()
-                .map(this::toDomain)
-                .toList();
+        log.debug("Consultando todos los usuarios");
+        List<User> usuarios = userRepository.findAll().stream().map(this::toDomain).toList();
+        log.info("findAll - {} usuarios encontrados", usuarios.size());
+        return usuarios;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email).map(this::toDomain);
+        log.debug("Consultando usuario por email: {}", email);
+        Optional<User> resultado = userRepository.findByEmail(email).map(this::toDomain);
+        resultado.ifPresentOrElse(
+            u -> log.info("findByEmail - Usuario encontrado: {}", email),
+            () -> log.warn("findByEmail - No existe usuario con email: {}", email)
+        );
+        return resultado;
     }
 
     @Override
     public List<User> buscarPorNombre(String nombre) {
-        return userRepository.findByNombresContainingIgnoreCase(nombre).stream()
-                .map(this::toDomain)
-                .toList();
+        log.debug("Buscando usuarios por nombre: {}", nombre);
+        List<User> resultado = userRepository.findByNombresContainingIgnoreCase(nombre).stream().map(this::toDomain).toList();
+        log.info("buscarPorNombre - {} resultado(s) para '{}'", resultado.size(), nombre);
+        return resultado;
     }
 
     @Override
     public List<User> buscarPorApellido(String apellido) {
-        return userRepository.buscarPorApellido(apellido).stream()
-                .map(this::toDomain)
-                .toList();
+        log.debug("Buscando usuarios por apellido: {}", apellido);
+        List<User> resultado = userRepository.buscarPorApellido(apellido).stream().map(this::toDomain).toList();
+        log.info("buscarPorApellido - {} resultado(s) para '{}'", resultado.size(), apellido);
+        return resultado;
     }
 
     @Override
     public List<User> buscarPorEdad(String edad) {
-        return userRepository.buscarPorEdadNativo(edad).stream()
-                .map(this::toDomain)
-                .toList();
+        log.debug("Buscando usuarios por edad: {}", edad);
+        List<User> resultado = userRepository.buscarPorEdadNativo(edad).stream().map(this::toDomain).toList();
+        log.info("buscarPorEdad - {} resultado(s) para edad '{}'", resultado.size(), edad);
+        return resultado;
     }
 
     @Override
     public long count() {
-        return userRepository.count();
+        long total = userRepository.count();
+        log.info("count - Total de usuarios en BD: {}", total);
+        return total;
     }
 
     private UserEntity toEntity(User user) {
