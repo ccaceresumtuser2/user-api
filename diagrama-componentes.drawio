@@ -1,0 +1,368 @@
+<mxfile host="app.diagrams.net" modified="2026-05-25" version="21.0.0" type="device">
+  <diagram name="Arquitectura Hexagonal" id="hexagonal-arch">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- TITLE -->
+        <mxCell id="title" value="Arquitectura Hexagonal — Spring Boot API Universidad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="0" width="900" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 1: DRIVING ADAPTERS ===== -->
+        <mxCell id="c1" value="&lt;b&gt;Driving Adapters&lt;/b&gt;&lt;br&gt;Web / REST&lt;br&gt;&lt;i&gt;infrastructure.web.rest&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#dae8fc;strokeColor=#6c8ebf;startSize=50;swimlaneLine=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="30" width="210" height="760" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_user" value="&lt;b&gt;UserController&lt;/b&gt;&lt;br&gt;POST /api/users/new&lt;br&gt;GET /list, /email/{e}&lt;br&gt;GET /buscar/*, /count" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="55" width="190" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_fac" value="&lt;b&gt;FacultadController&lt;/b&gt;&lt;br&gt;CRUD /api/facultades" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="130" width="190" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_prog" value="&lt;b&gt;ProgramaController&lt;/b&gt;&lt;br&gt;CRUD /api/programas&lt;br&gt;GET /facultad/{id}" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="180" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_asig" value="&lt;b&gt;AsignaturaController&lt;/b&gt;&lt;br&gt;CRUD /api/asignaturas&lt;br&gt;GET /programa/{id}" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="240" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_book" value="&lt;b&gt;BookController&lt;/b&gt;&lt;br&gt;CRUD /api/books&lt;br&gt;GET /autor/{id}" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="300" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_auth" value="&lt;b&gt;AuthorController&lt;/b&gt;&lt;br&gt;CRUD /api/authors" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="360" width="190" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl_post" value="&lt;b&gt;PostController&lt;/b&gt;&lt;br&gt;GET /api/posts/list&lt;br&gt;GET /api/posts/{id}" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="410" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="geh" value="&lt;b&gt;GlobalExceptionHandler&lt;/b&gt;&lt;br&gt;@RestControllerAdvice&lt;br&gt;400 MethodArgNotValid&lt;br&gt;400 IllegalArgument&lt;br&gt;400 DataIntegrity&lt;br&gt;404 RuntimeException" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="475" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="valid_note" value="&lt;b&gt;Bean Validation&lt;/b&gt;&lt;br&gt;@Valid en controllers&lt;br&gt;ValidationMessages.properties&lt;br&gt;@NotBlank @NotNull @Positive" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#d5e8d4;strokeColor=#82b366;strokeDasharray=5 5;" vertex="1" parent="c1">
+          <mxGeometry x="10" y="570" width="190" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 2: PORT-IN ===== -->
+        <mxCell id="c2" value="&lt;b&gt;Port-In&lt;/b&gt;&lt;br&gt;Interfaces de entrada&lt;br&gt;&lt;i&gt;application.port.in&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#d5e8d4;strokeColor=#82b366;startSize=50;" vertex="1" parent="1">
+          <mxGeometry x="230" y="30" width="185" height="760" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_user" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;UserPortIn&lt;/b&gt;&lt;br&gt;createUser, findAll&lt;br&gt;findByEmail, buscarPor*&lt;br&gt;count" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="55" width="165" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_fac" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;FacultadPortIn&lt;/b&gt;&lt;br&gt;crear, findAll, findById&lt;br&gt;actualizar, eliminar" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="130" width="165" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_prog" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;ProgramaPortIn&lt;/b&gt;&lt;br&gt;CRUD + findByFacultad" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="195" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_asig" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;AsignaturaPortIn&lt;/b&gt;&lt;br&gt;CRUD + findByPrograma" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="255" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_book" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;BookPortIn&lt;/b&gt;&lt;br&gt;CRUD + findByAuthor" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="315" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_auth" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;AuthorPortIn&lt;/b&gt;&lt;br&gt;CRUD completo" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="375" width="165" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pi_post" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;PostPortIn&lt;/b&gt;&lt;br&gt;findAll, findById" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c2">
+          <mxGeometry x="10" y="430" width="165" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 3: DOMAIN ===== -->
+        <mxCell id="c3" value="&lt;b&gt;Domain Layer&lt;/b&gt;&lt;br&gt;Modelos + Servicios de dominio&lt;br&gt;&lt;i&gt;domain.model / domain.service&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#ffe6cc;strokeColor=#d79b00;startSize=50;" vertex="1" parent="1">
+          <mxGeometry x="425" y="30" width="245" height="760" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dm_group" value="&lt;b&gt;Domain Models&lt;/b&gt;&lt;br&gt;User | Facultad | Programa&lt;br&gt;Asignatura | Book | Author | Post&lt;br&gt;&lt;i&gt;@Builder @Getter @Setter&lt;/i&gt;&lt;br&gt;&lt;i&gt;Plain Java (sin anotaciones Spring)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="c3">
+          <mxGeometry x="10" y="55" width="225" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ds_group" value="&lt;b&gt;Domain Services&lt;/b&gt;&lt;br&gt;UserService | FacultadService&lt;br&gt;ProgramaService | AsignaturaService&lt;br&gt;BookService | AuthorService&lt;br&gt;&lt;i&gt;Reglas de negocio (plain Java)&lt;/i&gt;&lt;br&gt;&lt;i&gt;Registrados via @Bean en BeanConfig&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="c3">
+          <mxGeometry x="10" y="155" width="225" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cfg_group" value="&lt;b&gt;Config (infrastructure.config)&lt;/b&gt;&lt;br&gt;AppMessages (@Component)&lt;br&gt;  @PropertySource messages.properties&lt;br&gt;  ~80 @Value fields&lt;br&gt;BeanConfig (@Configuration)&lt;br&gt;  Crea Domain Services con @Bean" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="c3">
+          <mxGeometry x="10" y="270" width="225" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 4: USE CASES ===== -->
+        <mxCell id="c4" value="&lt;b&gt;Use Cases&lt;/b&gt;&lt;br&gt;@Service — orquestadores&lt;br&gt;&lt;i&gt;application.usecase&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;startSize=50;" vertex="1" parent="1">
+          <mxGeometry x="680" y="30" width="185" height="760" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_user" value="&lt;b&gt;UserUseCase&lt;/b&gt;&lt;br&gt;impl UserPortIn&lt;br&gt;↳ UserService&lt;br&gt;↳ UserPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="55" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_fac" value="&lt;b&gt;FacultadUseCase&lt;/b&gt;&lt;br&gt;impl FacultadPortIn&lt;br&gt;↳ FacultadService&lt;br&gt;↳ FacultadPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="125" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_prog" value="&lt;b&gt;ProgramaUseCase&lt;/b&gt;&lt;br&gt;impl ProgramaPortIn&lt;br&gt;↳ ProgramaService&lt;br&gt;↳ ProgramaPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="195" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_asig" value="&lt;b&gt;AsignaturaUseCase&lt;/b&gt;&lt;br&gt;impl AsignaturaPortIn&lt;br&gt;↳ AsignaturaService&lt;br&gt;↳ AsignaturaPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="265" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_book" value="&lt;b&gt;BookUseCase&lt;/b&gt;&lt;br&gt;impl BookPortIn&lt;br&gt;↳ BookService&lt;br&gt;↳ BookPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="335" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_auth" value="&lt;b&gt;AuthorUseCase&lt;/b&gt;&lt;br&gt;impl AuthorPortIn&lt;br&gt;↳ AuthorService&lt;br&gt;↳ AuthorPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="405" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_post" value="&lt;b&gt;PostUseCase&lt;/b&gt;&lt;br&gt;impl PostPortIn&lt;br&gt;↳ PostPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry x="10" y="475" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 5: PORT-OUT ===== -->
+        <mxCell id="c5" value="&lt;b&gt;Port-Out&lt;/b&gt;&lt;br&gt;Interfaces de salida&lt;br&gt;&lt;i&gt;application.port.out&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#d5e8d4;strokeColor=#82b366;startSize=50;" vertex="1" parent="1">
+          <mxGeometry x="875" y="30" width="185" height="760" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_user" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;UserPortOut&lt;/b&gt;&lt;br&gt;save, findAll, findByEmail&lt;br&gt;buscarPor*, count" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="55" width="165" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_fac" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;FacultadPortOut&lt;/b&gt;&lt;br&gt;CRUD + existsBy*" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="125" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_prog" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;ProgramaPortOut&lt;/b&gt;&lt;br&gt;CRUD + findByFacultad&lt;br&gt;+ existsBy*" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="185" width="165" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_asig" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;AsignaturaPortOut&lt;/b&gt;&lt;br&gt;CRUD + findByPrograma&lt;br&gt;+ existsBy*" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="250" width="165" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_book" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;BookPortOut&lt;/b&gt;&lt;br&gt;CRUD + findByAuthor&lt;br&gt;+ existsBy*" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="315" width="165" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_auth" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;AuthorPortOut&lt;/b&gt;&lt;br&gt;CRUD + existsBy*" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="380" width="165" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="po_post" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;PostPortOut&lt;/b&gt;&lt;br&gt;findAll, findById" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="c5">
+          <mxGeometry x="10" y="440" width="165" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 6: DRIVEN ADAPTERS ===== -->
+        <mxCell id="c6" value="&lt;b&gt;Driven Adapters (Persistence)&lt;/b&gt;&lt;br&gt;&lt;i&gt;infrastructure.persistence.adapter&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#f8cecc;strokeColor=#b85450;startSize=45;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="30" width="215" height="520" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_user" value="&lt;b&gt;UserPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl UserPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="50" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_fac" value="&lt;b&gt;FacultadPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl FacultadPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="100" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_prog" value="&lt;b&gt;ProgramaPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl ProgramaPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="150" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_asig" value="&lt;b&gt;AsignaturaPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl AsignaturaPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="200" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_book" value="&lt;b&gt;BookPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl BookPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="250" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_auth" value="&lt;b&gt;AuthorPersistenceAdapter&lt;/b&gt;&lt;br&gt;impl AuthorPortOut" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="300" width="195" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pa_post" value="&lt;b&gt;PostWebClientAdapter&lt;/b&gt;&lt;br&gt;impl PostPortOut&lt;br&gt;WebClient HTTP" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="350" width="195" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ent_label" value="&lt;b&gt;JPA Entities&lt;/b&gt;: UserEntity | FacultadEntity&lt;br&gt;ProgramaEntity | AsignaturaEntity&lt;br&gt;BookEntity (@ManyToMany) | AuthorEntity&lt;br&gt;&lt;i&gt;infrastructure.persistence.entity&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="c6">
+          <mxGeometry x="10" y="415" width="195" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CONTAINER 7: JPA REPOSITORIES ===== -->
+        <mxCell id="c7" value="&lt;b&gt;JPA Repositories&lt;/b&gt;&lt;br&gt;&lt;i&gt;extends JpaRepository — infrastructure.persistence.repository&lt;/i&gt;" style="swimlane;fontStyle=0;fontSize=10;fillColor=#e1d5e7;strokeColor=#9673a6;startSize=45;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="560" width="215" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="repos" value="UserRepository&lt;br&gt;FacultadRepository&lt;br&gt;ProgramaRepository&lt;br&gt;AsignaturaRepository&lt;br&gt;BookRepository | AuthorRepository&lt;br&gt;&lt;br&gt;&lt;i&gt;existsBy* | findBy*&lt;/i&gt;&lt;br&gt;&lt;i&gt;@Query JPQL + nativeQuery&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="c7">
+          <mxGeometry x="10" y="50" width="195" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===== DATABASE ===== -->
+        <mxCell id="db" value="&lt;b&gt;Base de Datos&lt;/b&gt;&lt;br&gt;MySQL / PostgreSQL&lt;br&gt;&lt;br&gt;users | facultades | programas&lt;br&gt;asignaturas | books | authors&lt;br&gt;book_authors (join table)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f5f5;strokeColor=#666666;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="580" width="165" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EXTERNAL API ===== -->
+        <mxCell id="ext_api" value="&lt;b&gt;JSONPlaceholder API&lt;/b&gt;&lt;br&gt;jsonplaceholder.typicode.com&lt;br&gt;GET /posts&lt;br&gt;GET /posts/{id}" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#f5f5f5;strokeColor=#666666;strokeDasharray=8 4;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="430" width="165" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===== REQUEST/RESPONSE DTOs ===== -->
+        <mxCell id="dtos" value="&lt;b&gt;Request / Response DTOs&lt;/b&gt;&lt;br&gt;FacultadRequest | ProgramaRequest&lt;br&gt;AsignaturaRequest | BookRequest&lt;br&gt;AuthorRequest | UserRequest&lt;br&gt;UserResponse (wrapper genérico)&lt;br&gt;UserMapper (static helper)" style="rounded=1;whiteSpace=wrap;fontSize=9;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeDasharray=5 5;" vertex="1" parent="1">
+          <mxGeometry x="10" y="800" width="210" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Controllers → Port-In ===== -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;exitX=1;exitY=0.5;exitDX=0;exitDY=0;entryX=0;entryY=0.5;entryDX=0;entryDY=0;" edge="1" source="ctrl_user" target="pi_user" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_fac" target="pi_fac" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_prog" target="pi_prog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_asig" target="pi_asig" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_book" target="pi_book" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_auth" target="pi_auth" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="ctrl_post" target="pi_post" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Use Cases impl Port-In (dashed realization) ===== -->
+        <mxCell id="b1" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_user" target="pi_user" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_fac" target="pi_fac" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_prog" target="pi_prog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_asig" target="pi_asig" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_book" target="pi_book" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_auth" target="pi_auth" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="uc_post" target="pi_post" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Use Cases → Port-Out ===== -->
+        <mxCell id="c_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_user" target="po_user" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_fac" target="po_fac" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_prog" target="po_prog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_asig" target="po_asig" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_book" target="po_book" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_auth" target="po_auth" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="uc_post" target="po_post" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Use Cases → Domain Services ===== -->
+        <mxCell id="d1" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;" edge="1" source="uc_user" target="ds_group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;" edge="1" source="uc_fac" target="ds_group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Persistence Adapters impl Port-Out ===== -->
+        <mxCell id="e1" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_user" target="po_user" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_fac" target="po_fac" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_prog" target="po_prog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_asig" target="po_asig" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_book" target="po_book" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_auth" target="po_auth" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="impl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDX=0;exitDY=0;" edge="1" source="pa_post" target="po_post" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Persistence Adapters → Repositories ===== -->
+        <mxCell id="f1" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="c6" target="c7" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Repositories → Database ===== -->
+        <mxCell id="f2" value="JPA / SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="c7" target="db" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: PostAdapter → External API ===== -->
+        <mxCell id="f3" value="WebClient" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;" edge="1" source="pa_post" target="ext_api" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ARROWS: Config creates Domain Services ===== -->
+        <mxCell id="g1" value="crea @Bean" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=8;dashed=1;" edge="1" source="cfg_group" target="ds_group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LEGEND ===== -->
+        <mxCell id="leg_title" value="&lt;b&gt;Leyenda&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="800" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" value="──▶  usa (dependencia directa)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="230" y="820" width="220" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" value="- - ▷  impl (realización — implementa interfaz)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="230" y="838" width="260" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" value="- - -  relación opcional / cross-cutting" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="230" y="856" width="250" height="18" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
