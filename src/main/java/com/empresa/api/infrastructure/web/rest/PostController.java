@@ -2,6 +2,7 @@ package com.empresa.api.infrastructure.web.rest;
 
 import com.empresa.api.application.port.in.PostPortIn;
 import com.empresa.api.domain.model.Post;
+import com.empresa.api.infrastructure.config.AppMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,7 @@ import java.util.List;
 public class PostController {
 
     private final PostPortIn postPortIn;
+    private final AppMessages messages;
 
     @Operation(summary = "Listar todos los posts", description = "Obtiene todos los posts desde JSONPlaceholder")
     @ApiResponse(responseCode = "200", description = "Posts obtenidos exitosamente")
@@ -33,7 +35,7 @@ public class PostController {
         List<Post> posts = postPortIn.findAll();
         return ResponseEntity.ok(UserResponse.builder()
                 .status("SUCCESS")
-                .message("Posts obtenidos de JSONPlaceholder")
+                .message(messages.getPostLista())
                 .data(posts)
                 .timestamp(LocalDateTime.now().toString())
                 .build());
@@ -47,7 +49,7 @@ public class PostController {
         Post post = postPortIn.findById(id);
         return ResponseEntity.ok(UserResponse.builder()
                 .status("SUCCESS")
-                .message("Post encontrado")
+                .message(messages.getPostEncontrado())
                 .data(post)
                 .timestamp(LocalDateTime.now().toString())
                 .build());

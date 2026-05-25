@@ -1,33 +1,35 @@
 package com.empresa.api.domain.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.empresa.api.domain.model.User;
+import com.empresa.api.infrastructure.config.AppMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.empresa.api.domain.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author Carlos Jose Caceres Ochoa
- * Servicio de dominio para gestionar las operaciones relacionadas con los usuarios.
- */
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+    private final AppMessages messages;
+
+    public UserService(AppMessages messages) {
+        this.messages = messages;
+    }
+
     public String createUser(User userData) {
-        log.debug("Iniciando creación de usuario");
+        log.debug("Iniciando creacion de usuario");
         if (userData == null) {
             log.error("Los datos del usuario son nulos");
-            return "Error: User data is null";
+            return messages.getUserDatosNulos();
         }
         String validationResult = validarUsuario(userData);
-        if (validationResult.equals("Usuario Validado con Exito")) {
+        if (validationResult.equals(messages.getUserValidado())) {
             log.info("Usuario validado correctamente: {}", userData.getEmail());
-            return "User created successfully: " + userData.toString();
+            return String.format(messages.getUserCreado(), userData.toString());
         } else {
-            log.warn("Validación fallida: {}", validationResult);
+            log.warn("Validacion fallida: {}", validationResult);
             return validationResult;
         }
     }
@@ -37,19 +39,19 @@ public class UserService {
         List<String> errors = new ArrayList<>();
 
         if (userData.getEmail() == null || userData.getEmail().isEmpty())
-            errors.add("Email is required");
+            errors.add(messages.getUserEmailObligatorio());
         if (userData.getNombres() == null || userData.getNombres().isEmpty())
-            errors.add("First name is required");
+            errors.add(messages.getUserNombresObligatorio());
         if (userData.getApellidos() == null || userData.getApellidos().isEmpty())
-            errors.add("Last name is required");
+            errors.add(messages.getUserApellidosObligatorio());
         if (userData.getEdad() == null || userData.getEdad().isEmpty())
-            errors.add("Age is required");
+            errors.add(messages.getUserEdadObligatorio());
 
         if (!errors.isEmpty()) {
             String errores = String.join(", ", errors);
-            log.warn("Errores de validación: {}", errores);
-            return "Error al Validar Usuario: " + errores;
+            log.warn("Errores de validacion: {}", errores);
+            return String.format(messages.getUserErrorValidacion(), errores);
         }
-        return "Usuario Validado con Exito";
+        return messages.getUserValidado();
     }
 }

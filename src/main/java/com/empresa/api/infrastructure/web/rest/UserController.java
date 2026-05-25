@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.empresa.api.application.port.in.UserPortIn;
 import com.empresa.api.domain.model.User;
+import com.empresa.api.infrastructure.config.AppMessages;
 import com.empresa.api.infrastructure.web.rest.mapper.UserMapper;
 
 /**
@@ -35,6 +36,7 @@ import com.empresa.api.infrastructure.web.rest.mapper.UserMapper;
 public class UserController {
 
     private final UserPortIn userPortIn;
+    private final AppMessages messages;
 
     @Operation(summary = "Crear un nuevo usuario", description = "Registra un nuevo usuario en el sistema")
     @ApiResponses({
@@ -50,7 +52,7 @@ public class UserController {
         String message = userPortIn.createUser(user);
         if (message.startsWith("Error")) {
             log.warn("POST /new - Error al crear usuario: {}", message);
-            return ResponseEntity.badRequest().body(UserMapper.toErrorResponse(message));
+            return ResponseEntity.badRequest().body(UserMapper.toErrorResponse(messages.getUserErrorCrear(), message));
         }
         log.info("POST /new - Usuario creado exitosamente: {}", request.getEmail());
         return ResponseEntity.ok(UserMapper.toResponse(message, user));
@@ -62,7 +64,7 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<UserResponse> listarUsuarios() {
         log.info("GET /list - Listando todos los usuarios");
-        return ResponseEntity.ok(UserMapper.toListResponse(userPortIn.findAll()));
+        return ResponseEntity.ok(UserMapper.toListResponse(messages.getUserLista(), userPortIn.findAll()));
     }
 
     @Operation(summary = "Buscar por email", description = "Consulta derivada: findByEmail")
@@ -76,11 +78,13 @@ public class UserController {
         return userPortIn.findByEmail(email)
                 .map(user -> {
                     log.info("GET /email/{} - Usuario encontrado", email);
-                    return ResponseEntity.ok(UserMapper.toResponse("Usuario encontrado", user));
+                    return ResponseEntity.ok(UserMapper.toResponse(messages.getUserEncontrado(), user));
                 })
                 .orElseGet(() -> {
                     log.warn("GET /email/{} - Usuario no encontrado", email);
-                    return ResponseEntity.status(404).body(UserMapper.toErrorResponse("No existe usuario con email: " + email));
+                    return ResponseEntity.status(404).body(UserMapper.toErrorResponse(
+                        messages.getErrorNoEncontrado(),
+                        String.format(messages.getUserEmailNoEncontrado(), email)));
                 });
     }
 
@@ -88,21 +92,21 @@ public class UserController {
     @GetMapping("/buscar/nombre")
     public ResponseEntity<UserResponse> buscarPorNombre(@RequestParam String q) {
         log.info("GET /buscar/nombre?q={} - Buscando por nombre", q);
-        return ResponseEntity.ok(UserMapper.toListResponse(userPortIn.buscarPorNombre(q)));
+        return ResponseEntity.ok(UserMapper.toListResponse(messages.getUserLista(), userPortIn.buscarPorNombre(q)));
     }
 
     @Operation(summary = "Buscar por apellido", description = "@Query JPQL: buscarPorApellido")
     @GetMapping("/buscar/apellido")
     public ResponseEntity<UserResponse> buscarPorApellido(@RequestParam String q) {
         log.info("GET /buscar/apellido?q={} - Buscando por apellido", q);
-        return ResponseEntity.ok(UserMapper.toListResponse(userPortIn.buscarPorApellido(q)));
+        return ResponseEntity.ok(UserMapper.toListResponse(messages.getUserLista(), userPortIn.buscarPorApellido(q)));
     }
 
     @Operation(summary = "Buscar por edad", description = "@Query nativeQuery: buscarPorEdad")
     @GetMapping("/buscar/edad")
     public ResponseEntity<UserResponse> buscarPorEdad(@RequestParam String q) {
         log.info("GET /buscar/edad?q={} - Buscando por edad", q);
-        return ResponseEntity.ok(UserMapper.toListResponse(userPortIn.buscarPorEdad(q)));
+        return ResponseEntity.ok(UserMapper.toListResponse(messages.getUserLista(), userPortIn.buscarPorEdad(q)));
     }
 
     @Operation(summary = "Contar usuarios", description = "Retorna el total de registros en la tabla users")
@@ -115,7 +119,7 @@ public class UserController {
         log.info("GET /count - Total de usuarios: {}", total);
         return ResponseEntity.ok(UserResponse.builder()
                 .status("SUCCESS")
-                .message("Total de usuarios registrados")
+                .message(messages.getUserTotal())
                 .data(total)
                 .timestamp(java.time.LocalDateTime.now().toString())
                 .build());

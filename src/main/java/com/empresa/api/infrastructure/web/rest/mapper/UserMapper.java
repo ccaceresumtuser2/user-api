@@ -30,19 +30,19 @@ public class UserMapper {
             .build();
     }
 
-    public static UserResponse toListResponse(List<User> users) {
+    public static UserResponse toListResponse(String message, List<User> users) {
         return UserResponse.builder()
             .status("SUCCESS")
-            .message("Lista de usuarios obtenida exitosamente")
+            .message(message)
             .data(users)
             .timestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
             .build();
     }
 
-    public static UserResponse toErrorResponse(String error) {
+    public static UserResponse toErrorResponse(String message, String error) {
         return UserResponse.builder()
             .status("ERROR")
-            .message("Error al crear el usuario Entrada inválida")
+            .message(message)
             .error(error)
             .timestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
             .build();
